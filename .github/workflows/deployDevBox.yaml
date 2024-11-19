@@ -99,7 +99,7 @@ jobs:
           resourceGroupName: ${{ env.devBoxResourceGroupName }}
           template: ./src/deploy/bicep/management/logAnalytics/deploy.bicep
           parameters: 'solutionName=${{ env.solutionName }}'
-          name: 'Deploy Log Analytics Resources'
+          deploymentName: 'Deploy Log Analytics Resources'
       
       # Deploy Network Connectivity Resources using ARM template
       - name: Deploy Dev Box Network Resources to Azure
@@ -109,7 +109,7 @@ jobs:
           resourceGroupName: ${{ env.devBoxResourceGroupName }}
           template: ./src/deploy/bicep/network/deploy.bicep
           parameters: 'solutionName=${{ env.solutionName }}'
-          name: 'Deploy Network Resources'
+          deploymentName: 'Deploy Network Resources'
 
       # Deploy Dev Center Resources using ARM template
       - name: Deploy Dev Box DevCenter Resources to Azure
@@ -119,7 +119,7 @@ jobs:
           resourceGroupName: ${{ env.devBoxResourceGroupName }}
           template: ./src/deploy/bicep/devBox/deploy.bicep
           parameters: 'solutionName=${{ env.solutionName }}'
-          name: 'Deploy DevCenter Resources'
+          deploymentName: 'Deploy DevCenter Resources'
 
   publish-bicep-artifacts:
     runs-on: ubuntu-latest
