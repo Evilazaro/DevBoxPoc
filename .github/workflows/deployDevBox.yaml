@@ -99,7 +99,7 @@ jobs:
           resourceGroupName: ${{ env.devBoxResourceGroupName }}
           template: ./src/deploy/bicep/management/logAnalytics/deploy.bicep
           parameters: 'solutionName=${{ env.solutionName }}'
-          deploymentName: 'Deploy-Log-Analytics-Resources'
+          deploymentName: 'Deploy-Management-Resources'
       
       # Deploy Network Connectivity Resources using ARM template
       - name: Deploy Dev Box Network Resources to Azure

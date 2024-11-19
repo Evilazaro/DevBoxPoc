@@ -96,7 +96,8 @@ jobs:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az deployment group create \
-          --resource-group $(managementResourceGroupName) \
+          --name 'Deploy-Management-Resources' \
+          --resource-group $(devBoxResourceGroupName) \
           --template-file ./src/deploy/bicep/management/logAnalytics/deploy.bicep \
           --parameters solutionName=$(solutionName) \
           --mode Incremental 
@@ -110,7 +111,8 @@ jobs:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az deployment group create \
-          --resource-group $(networkResourceGroupName) \
+          --name 'Deploy-Network-Resources' \
+          --resource-group $(devBoxResourceGroupName) \
           --template-file ./src/deploy/bicep/network/deploy.bicep \
           --parameters solutionName=$(solutionName) \
           --mode Incremental
@@ -124,6 +126,7 @@ jobs:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az deployment group create \
+          --name 'Deploy-DevCenter-Resources' \
           --resource-group $(devBoxResourceGroupName) \
           --template-file ./src/deploy/bicep/devBox/deploy.bicep \
           --parameters solutionName=$(solutionName) \
