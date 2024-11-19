@@ -1,8 +1,7 @@
 #!/bin/bash
 
-
 devBoxResourceGroupName="$1"
-location="$2"
+location="westus3"
 
 # Function to create an Azure resource group
 createResourceGroup() {

@@ -86,7 +86,7 @@ jobs:
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        ./src/deploy/bicep/bash/deployResourcesOrganization.sh $(devBoxResourceGroupName) $(location)
+        ./src/deploy/bicep/bash/deployResourcesOrganization.sh $(devBoxResourceGroupName)
 
   # Deploy the Dev Box Management Resources to Azure
   - task: AzureCLI@2
