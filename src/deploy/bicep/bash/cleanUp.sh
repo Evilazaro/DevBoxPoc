@@ -7,8 +7,8 @@ set -euo pipefail
 # Azure Resource Group Names Constants
 solutionName="PetDx"
 devBoxResourceGroupName="$solutionName-rg"
-networkResourceGroupName="$solutionName-Management-rg"
-managementResourceGroupName="$solutionName-Network-rg"
+networkResourceGroupName="$devBoxResourceGroupName"
+managementResourceGroupName="$devBoxResourceGroupName"
 
 # Identity Parameters Constants
 customRoleName="eShopPetBuilderRole"

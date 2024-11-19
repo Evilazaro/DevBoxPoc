@@ -2,9 +2,9 @@
 
 param (
     [string]$devBoxResourceGroupName='PetDx-rg',
-    [string]$networkResourceGroupName='PetDx-Network-rg',
-    [string]$managementResourceGroupName='PetDx-Management-rg',
-    [string]$location='northuscentral'
+    [string]$networkResourceGroupName='PetDx-rg',
+    [string]$managementResourceGroupName='PetDx-rg',
+    [string]$location='westus3'
 )
 
 # Function to create an Azure resource group

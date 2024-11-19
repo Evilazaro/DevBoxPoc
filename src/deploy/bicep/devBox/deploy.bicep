@@ -33,7 +33,7 @@ var projects = [
 var devCenterName = format('{0}DevCenter', solutionName)
 
 @description('The name of the network resource group')
-var networkResourceGroupName = format('{0}-Network-rg', solutionName)
+var networkResourceGroupName = resourceGroup().name
 
 var tags = {
   division: 'PlatformEngineeringTeam-DX'

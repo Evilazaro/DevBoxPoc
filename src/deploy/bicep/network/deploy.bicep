@@ -1,9 +1,6 @@
 @description('Solution Name')
 param solutionName string
 
-@description('Management Resource Group Name')
-param managementResourceGroupName string
-
 @description('The name of the virtual network')
 var vnetName = format('{0}-vnet', solutionName)
 
@@ -63,7 +60,7 @@ var logAnalyticsWorkspaceName = '${solutionName}-logAnalytics'
 @description('Getting the Log Analytics Deployed')
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
   name: logAnalyticsWorkspaceName
-  scope: resourceGroup(managementResourceGroupName)
+  scope: resourceGroup()
 }
 
 @description('Creating Virtual Network Diagnostic Settings')
