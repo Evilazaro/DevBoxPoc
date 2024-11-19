@@ -12,8 +12,8 @@ env:
   location: "westus3"
   solutionName: "PetDx"
   devBoxResourceGroupName: "PetDx-rg"
-  networkResourceGroupName: "PetDx-Network-rg"
-  managementResourceGroupName: "PetDx-Management-rg"
+  networkResourceGroupName: "PetDx-rg"
+  managementResourceGroupName: "PetDx-rg"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
 
 jobs:

@@ -4,11 +4,11 @@
 set -e
 
 # Define variables
-location="northuscentral"
+location="westus3"
 solutionName="PetDx"
 devBoxResourceGroupName="PetDx-rg"
-networkResourceGroupName="PetDx-Network-rg"
-managementResourceGroupName="PetDx-Management-rg"
+networkResourceGroupName="PetDx-rg"
+managementResourceGroupName="PetDx-rg"
 
 # Function to deploy management resources
 deployManagementResources() {
