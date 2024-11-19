@@ -12,8 +12,6 @@ env:
   location: "westus3"
   solutionName: "PetDx"
   devBoxResourceGroupName: "PetDx-rg"
-  networkResourceGroupName: "PetDx-rg"
-  managementResourceGroupName: "PetDx-rg"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
 
 jobs:
@@ -91,14 +89,14 @@ jobs:
 
       # Deploy the Landing Zone Resources using the deployment script
       - name: Deploy Landing Zone Resources for ${{ env.solutionName }}
-        run: ./src/deploy/bicep/bash/deployResourcesOrganization.sh ${{ env.devBoxResourceGroupName }} ${{ env.networkResourceGroupName }} ${{ env.managementResourceGroupName }} ${{ env.location }}
+        run: ./src/deploy/bicep/bash/deployResourcesOrganization.sh ${{ env.devBoxResourceGroupName }} ${{ env.location }}
       
       # Deploy Log Analytics resources using ARM template
       - name: Deploy Dev Box Management Resources to Azure
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_CREDENTIALS.subscriptionId }}
-          resourceGroupName: ${{ env.managementResourceGroupName }}
+          resourceGroupName: ${{ env.devBoxResourceGroupName }}
           template: ./src/deploy/bicep/management/logAnalytics/deploy.bicep
           parameters: 'solutionName=${{ env.solutionName }}'
       
@@ -107,7 +105,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.AZURE_CREDENTIALS.subscriptionId }}
-          resourceGroupName: ${{ env.networkResourceGroupName }}
+          resourceGroupName: ${{ env.devBoxResourceGroupName }}
           template: ./src/deploy/bicep/network/deploy.bicep
           parameters: 'solutionName=${{ env.solutionName }}'
 
