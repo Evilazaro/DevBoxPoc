@@ -2,8 +2,6 @@
 
 param (
     [string]$devBoxResourceGroupName='PetDx-rg',
-    [string]$networkResourceGroupName='PetDx-rg',
-    [string]$managementResourceGroupName='PetDx-rg',
     [string]$location='westus3'
 )
 
@@ -39,15 +37,13 @@ function Create-ResourceGroup {
 # Function to deploy resources for the organization
 function Deploy-ResourcesOrganization {
     Create-ResourceGroup -resourceGroupName $devBoxResourceGroupName -location $location
-    Create-ResourceGroup -resourceGroupName $networkResourceGroupName -location $location
-    Create-ResourceGroup -resourceGroupName $managementResourceGroupName -location $location
 }
 
 # Function to validate input parameters
 function Validate-Inputs {
     if ([string]::IsNullOrEmpty($devBoxResourceGroupName) -or [string]::IsNullOrEmpty($networkResourceGroupName) -or [string]::IsNullOrEmpty($managementResourceGroupName) -or [string]::IsNullOrEmpty($location)) {
         Write-Output "Error: Missing required parameters."
-        Write-Output "Usage: .\deployResourcesOrganization.ps1 -devBoxResourceGroupName <devBoxResourceGroupName> -networkResourceGroupName <networkResourceGroupName> -managementResourceGroupName <managementResourceGroupName> -location <location>"
+        Write-Output "Usage: .\deployResourcesOrganization.ps1 -devBoxResourceGroupName <devBoxResourceGroupName> -location <location>"
         return 1
     }
 }

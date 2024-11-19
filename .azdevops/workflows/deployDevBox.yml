@@ -5,11 +5,10 @@ pr:
 - none
 
 variables:
+  variables:
   location: "westus3"
   solutionName: "PetDx"
   devBoxResourceGroupName: "PetDx-rg"
-  networkResourceGroupName: "PetDx-rg"
-  managementResourceGroupName: "PetDx-rg"
   bicepArtifactsPath: '$(Build.SourcesDirectory)/bicepArtifacts'
 
 jobs:
@@ -86,7 +85,7 @@ jobs:
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        ./src/deploy/bicep/bash/deployResourcesOrganization.sh $(devBoxResourceGroupName)
+        ./src/deploy/bicep/bash/deployResourcesOrganization.sh $(devBoxResourceGroupName) $(location)
 
   # Deploy the Dev Box Management Resources to Azure
   - task: AzureCLI@2
@@ -113,7 +112,7 @@ jobs:
         az deployment group create \
           --resource-group $(networkResourceGroupName) \
           --template-file ./src/deploy/bicep/network/deploy.bicep \
-          --parameters solutionName=$(solutionName) managementResourceGroupName=$(managementResourceGroupName) \
+          --parameters solutionName=$(solutionName) \
           --mode Incremental
 
   # Deploy the Dev Box DevCenter Resources to Azure
