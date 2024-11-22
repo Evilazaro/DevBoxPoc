@@ -7,8 +7,8 @@ pr:
 variables:
   variables:
   location: "westus3"
-  solutionName: "PetDx"
-  devBoxResourceGroupName: "PetDx-rg"
+  solutionName: "ITMSDevBox"
+  devBoxResourceGroupName: "IT-MSDevBox-POC"
   bicepArtifactsPath: '$(Build.SourcesDirectory)/bicepArtifacts'
 
 jobs:

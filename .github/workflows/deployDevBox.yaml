@@ -10,8 +10,8 @@ on:
 
 env:
   location: "westus3"
-  solutionName: "PetDx"
-  devBoxResourceGroupName: "PetDx-rg"
+  solutionName: "ITMSDevBox"
+  devBoxResourceGroupName: "IT-MSDevBox-POC"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
 
 jobs:
@@ -90,26 +90,6 @@ jobs:
       # Deploy the Landing Zone Resources using the deployment script
       - name: Deploy Landing Zone Resources for ${{ env.solutionName }}
         run: ./src/deploy/bicep/bash/deployResourcesOrganization.sh ${{ env.devBoxResourceGroupName }} ${{ env.location }}
-      
-      # Deploy Log Analytics resources using ARM template
-      - name: Deploy Dev Box Management Resources to Azure
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_CREDENTIALS.subscriptionId }}
-          resourceGroupName: ${{ env.devBoxResourceGroupName }}
-          template: ./src/deploy/bicep/management/logAnalytics/deploy.bicep
-          parameters: 'solutionName=${{ env.solutionName }}'
-          deploymentName: 'Deploy-Management-Resources'
-      
-      # Deploy Network Connectivity Resources using ARM template
-      - name: Deploy Dev Box Network Resources to Azure
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_CREDENTIALS.subscriptionId }}
-          resourceGroupName: ${{ env.devBoxResourceGroupName }}
-          template: ./src/deploy/bicep/network/deploy.bicep
-          parameters: 'solutionName=${{ env.solutionName }}'
-          deploymentName: 'Deploy-Network-Resources'
 
       # Deploy Dev Center Resources using ARM template
       - name: Deploy Dev Box DevCenter Resources to Azure
@@ -117,7 +97,7 @@ jobs:
         with:
           subscriptionId: ${{ secrets.AZURE_CREDENTIALS.subscriptionId }}
           resourceGroupName: ${{ env.devBoxResourceGroupName }}
-          template: ./src/deploy/bicep/devBox/deploy.bicep
+          template: ./src/deploy/bicep/deploy.bicep
           parameters: 'solutionName=${{ env.solutionName }}'
           deploymentName: 'Deploy-DevCenter-Resources'
 

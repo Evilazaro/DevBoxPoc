@@ -13,18 +13,16 @@ param projects array
 @description('Network Resource Group Name')
 param networkResourceGroupName string
 
-param catalogInfo object
-
 @description('Tags')
 param tags object
 
 @description('Managed Identity')
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-07-31-preview' existing = {
   name: identityName
 }
 
 @description('Deploying DevCenter')
-resource deployDevCenter 'Microsoft.DevCenter/devcenters@2024-02-01' = {
+resource deployDevCenter 'Microsoft.DevCenter/devcenters@2024-10-01-preview' = {
   name: name
   location: resourceGroup().location
   identity: {
@@ -38,6 +36,9 @@ resource deployDevCenter 'Microsoft.DevCenter/devcenters@2024-02-01' = {
       catalogItemSyncEnableStatus: 'Enabled'
     }
     displayName: name
+    devBoxProvisioningSettings: {
+      installAzureMonitorAgentEnableStatus: 'Enabled'
+    }
   }
   tags: tags
   dependsOn: [
@@ -61,16 +62,6 @@ module devCenterEnvironments 'configureDevCenterEnvironments.bicep' = {
     deployDevCenter
   ]
 }
-
-@description('Dev Center Catalogs')
-module configureDevCenterCatalogs 'configureDevCenterCatalogs.bicep' = {
-  name: '${deployDevCenter.name}-Catalog'
-  params: {
-    devCenterName: deployDevCenter.name
-    catalogInfo: catalogInfo
-  }
-}
-
 @description('Dev Center Network Connection')
 module configureDevCenterNetworkConnection 'configureDevCenterNetworkConnection.bicep' = [
   for project in projects: {

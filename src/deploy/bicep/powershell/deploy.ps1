@@ -4,7 +4,7 @@ $ErrorActionPreference = "Stop"
 
 # Define variables
 $location = "westus3"
-$solutionName = "PetDx"
+$solutionName = "ITMSDevBox"
 $devBoxResourceGroupName = "PetDx-rg"
 $networkResourceGroupName = "PetDx-rg"
 $managementResourceGroupName = "PetDx-rg"
