@@ -5,8 +5,8 @@ $ErrorActionPreference = "Stop"
 $WarningPreference = "Stop"
 
 # Azure Resource Group Names Constants
-$solutionName = "PetDx"
-$devBoxResourceGroupName = "$solutionName-rg"
+$solutionName = "ITMSDevBox"
+$devBoxResourceGroupName = "IT-MSDevBox-POC"
 
 # Identity Parameters Constants
 $customRoleName = "eShopPetBuilderRole"
