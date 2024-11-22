@@ -24,7 +24,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
 }
 
 @description('Deploying DevCenter')
-resource deployDevCenter 'Microsoft.DevCenter/devcenters@2024-02-01' = {
+resource deployDevCenter 'Microsoft.DevCenter/devcenters@2024-10-01-preview' = {
   name: name
   location: resourceGroup().location
   identity: {
@@ -38,6 +38,9 @@ resource deployDevCenter 'Microsoft.DevCenter/devcenters@2024-02-01' = {
       catalogItemSyncEnableStatus: 'Enabled'
     }
     displayName: name
+    devBoxProvisioningSettings: {
+      installAzureMonitorAgentEnableStatus: 'Enabled'
+    }
   }
   tags: tags
   dependsOn: [
