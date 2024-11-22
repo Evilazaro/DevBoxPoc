@@ -10,11 +10,8 @@ on:
 
 env:
   location: "westus3"
-  solutionName: "PetDx"
-  devBoxResourceGroupName: "PetDx-rg"
-  networkResourceGroupName: "PetDx-rg"
-  managementResourceGroupName: "PetDx-rg"
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
+  solutionName: "IT-MSDevBox"
+  devBoxResourceGroupName: "IT-MSDevBox-POC"
 
 jobs:
   Test-Azure-Credentials-And-Login:
