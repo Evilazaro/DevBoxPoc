@@ -7,7 +7,7 @@ pr:
 variables:
   variables:
   location: "westus3"
-  solutionName: "IT-MSDevBox"
+  solutionName: "ITMSDevBox"
   devBoxResourceGroupName: "IT-MSDevBox-POC"
   bicepArtifactsPath: '$(Build.SourcesDirectory)/bicepArtifacts'
 

@@ -10,7 +10,7 @@ on:
 
 env:
   location: "westus3"
-  solutionName: "IT-MSDevBox"
+  solutionName: "ITMSDevBox"
   devBoxResourceGroupName: "IT-MSDevBox-POC"
 
 jobs:
