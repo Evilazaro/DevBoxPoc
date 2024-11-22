@@ -17,7 +17,7 @@ param networkResourceGroupName string
 param tags object
 
 @description('Managed Identity')
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-07-31-preview' existing = {
   name: identityName
 }
 

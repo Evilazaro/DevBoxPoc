@@ -44,7 +44,7 @@ module projectCatalog 'configureProjectCatalogs.bicep' = {
 }
 
 @description('Create DevCenter DevBox Pools for BackEnd Engineers of eShop Project')
-resource backEndPool 'Microsoft.DevCenter/projects/pools@2023-04-01' = {
+resource backEndPool 'Microsoft.DevCenter/projects/pools@2024-10-01-preview' = {
   name: 'backEndPool'
   location: resourceGroup().location
   parent: project
@@ -61,7 +61,7 @@ resource backEndPool 'Microsoft.DevCenter/projects/pools@2023-04-01' = {
 }
 
 @description('Create DevCenter DevBox Pools for FrontEnd Engineers of eShop Project')
-resource frontEndPool 'Microsoft.DevCenter/projects/pools@2023-04-01' = {
+resource frontEndPool 'Microsoft.DevCenter/projects/pools@2024-10-01-preview' = {
   name: 'frontEndPool'
   location: resourceGroup().location
   parent: project

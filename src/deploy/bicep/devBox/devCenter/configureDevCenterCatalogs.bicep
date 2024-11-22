@@ -2,7 +2,7 @@ param devCenterName string
 param catalogInfo object
 
 @description('Existent DevCenter')
-resource devCenter 'Microsoft.DevCenter/devcenters@2024-02-01' existing = {
+resource devCenter 'Microsoft.DevCenter/devcenters@2024-10-01-preview' existing = {
   name: devCenterName
 }
 

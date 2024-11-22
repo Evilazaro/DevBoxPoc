@@ -5,11 +5,11 @@ resource project 'Microsoft.DevCenter/projects@2024-02-01' existing = {
   name: projectName
 }
 
-resource identity 'Microsoft.ManagedIdentity/identities@2023-01-31' existing = {
+resource identity 'Microsoft.ManagedIdentity/identities@2023-07-31-preview' existing = {
   name: identityName
 }
 
-resource projectDevEnvironment 'Microsoft.DevCenter/projects/environmentTypes@2023-04-01' = {
+resource projectDevEnvironment 'Microsoft.DevCenter/projects/environmentTypes@2024-10-01-preview' = {
   name: format('{0}DevEnvironment', projectName)
   location: resourceGroup().location
   tags: {
