@@ -6,12 +6,12 @@ param projectInfo object
 param tags object
 
 @description('Existent DevCenter')
-resource devCenter 'Microsoft.DevCenter/devcenters@2024-02-01' existing = {
+resource devCenter 'Microsoft.DevCenter/devcenters@2024-10-01-preview' existing = {
   name: devCenterName
 }
 
 @description('Create DevCenter eShop Project')
-resource project 'Microsoft.DevCenter/projects@2024-02-01' = {
+resource project 'Microsoft.DevCenter/projects@2024-10-01-preview' = {
   name: projectInfo.name
   location: resourceGroup().location
   properties: {
@@ -22,6 +22,7 @@ resource project 'Microsoft.DevCenter/projects@2024-02-01' = {
     catalogSettings: {
       catalogItemSyncTypes: [
         'EnvironmentDefinition'
+        'ImageDefinition'
       ]
     }
   }
