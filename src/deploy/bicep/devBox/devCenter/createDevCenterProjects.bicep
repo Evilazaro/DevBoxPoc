@@ -53,9 +53,15 @@ resource backEndPool 'Microsoft.DevCenter/projects/pools@2024-10-01-preview' = {
     licenseType: 'Windows_Client'
     localAdministrator: 'Enabled'
     networkConnectionName: networkConnectionName
+    singleSignOnStatus: 'Enabled'
+    virtualNetworkType: 'Unmanaged'
+    stopOnNoConnect: {
+      gracePeriodMinutes: 60
+      status: 'Enabled'
+    }
     stopOnDisconnect: {
       gracePeriodMinutes: 60
-      status: 'Disabled'
+      status: 'Enabled'
     }
   }
 }
@@ -70,9 +76,15 @@ resource frontEndPool 'Microsoft.DevCenter/projects/pools@2024-10-01-preview' = 
     licenseType: 'Windows_Client'
     localAdministrator: 'Enabled'
     networkConnectionName: networkConnectionName
+    singleSignOnStatus: 'Enabled'
+    virtualNetworkType: 'Unmanaged'
+    stopOnNoConnect: {
+      gracePeriodMinutes: 60
+      status: 'Enabled'
+    }
     stopOnDisconnect: {
       gracePeriodMinutes: 60
-      status: 'Disabled'
+      status: 'Enabled'
     }
   }
 }
