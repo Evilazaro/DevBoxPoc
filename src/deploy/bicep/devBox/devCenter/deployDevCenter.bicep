@@ -13,6 +13,8 @@ param projects array
 @description('Network Resource Group Name')
 param networkResourceGroupName string
 
+param catalogInfo object
+
 @description('Tags')
 param tags object
 
@@ -35,10 +37,13 @@ resource deployDevCenter 'Microsoft.DevCenter/devcenters@2024-10-01-preview' = {
     projectCatalogSettings: {
       catalogItemSyncEnableStatus: 'Enabled'
     }
-    displayName: name
     devBoxProvisioningSettings: {
       installAzureMonitorAgentEnableStatus: 'Enabled'
     }
+    networkSettings: {
+      microsoftHostedNetworkEnableStatus: 'Enabled'
+    }
+    displayName: name
   }
   tags: tags
   dependsOn: [
@@ -62,6 +67,7 @@ module devCenterEnvironments 'configureDevCenterEnvironments.bicep' = {
     deployDevCenter
   ]
 }
+
 @description('Dev Center Network Connection')
 module configureDevCenterNetworkConnection 'configureDevCenterNetworkConnection.bicep' = [
   for project in projects: {

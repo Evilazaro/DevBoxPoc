@@ -1,6 +1,9 @@
 @description('Solution Name')
 param solutionName string
 
+@description('Management Resource Group Name')
+param managementResourceGroupName string
+
 @description('The name of the virtual network')
 var vnetName = format('{0}-vnet', solutionName)
 
@@ -50,7 +53,7 @@ output vnetId string = virtualNetwork.outputs.vnetId
 output vnetAddressSpace array = virtualNetwork.outputs.vnetAddressSpace
 
 @description('Getting the new Virtual Network Deployed')
-resource vnetDeployed 'Microsoft.Network/virtualNetworks@2024-01-01' existing = {
+resource vnetDeployed 'Microsoft.Network/virtualNetworks@2024-03-01' existing = {
   name: vnetName
 }
 
@@ -60,7 +63,7 @@ var logAnalyticsWorkspaceName = '${solutionName}-logAnalytics'
 @description('Getting the Log Analytics Deployed')
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
   name: logAnalyticsWorkspaceName
-  scope: resourceGroup()
+  scope: resourceGroup(managementResourceGroupName)
 }
 
 @description('Creating Virtual Network Diagnostic Settings')
@@ -99,7 +102,7 @@ module nsg '../security/networkSecurityGroup.bicep' = {
 }
 
 @description('Getting the new NSG Deployed')
-resource nsgDeployed 'Microsoft.Network/networkSecurityGroups@2024-01-01' existing = {
+resource nsgDeployed 'Microsoft.Network/networkSecurityGroups@2024-03-01' existing = {
   name: 'nsg-nsg'
 }
 

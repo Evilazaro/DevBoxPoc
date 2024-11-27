@@ -5,8 +5,10 @@ $ErrorActionPreference = "Stop"
 $WarningPreference = "Stop"
 
 # Azure Resource Group Names Constants
-$solutionName = "ITMSDevBox"
-$devBoxResourceGroupName = "IT-MSDevBox-POC"
+$solutionName = "PetDx"
+$devBoxResourceGroupName = "$solutionName-rg"
+$networkResourceGroupName = "$solutionName-Management-rg"
+$managementResourceGroupName = "$solutionName-Network-rg"
 
 # Identity Parameters Constants
 $customRoleName = "eShopPetBuilderRole"
@@ -108,6 +110,8 @@ function CleanUp-Resources {
     Clear-Host
     Delete-RoleAssignments
     Delete-ResourceGroup -resourceGroupName $devBoxResourceGroupName
+    Delete-ResourceGroup -resourceGroupName $networkResourceGroupName
+    Delete-ResourceGroup -resourceGroupName $managementResourceGroupName
     Delete-ResourceGroup -resourceGroupName "NetworkWatcherRG"
     Delete-ResourceGroup -resourceGroupName "Default-ActivityLogAlerts"
     Delete-ResourceGroup -resourceGroupName "DefaultResourceGroup-WUS2"

@@ -3,11 +3,11 @@
 $ErrorActionPreference = "Stop"
 
 # Define variables
-$location = "westus3"
-$solutionName = "ITMSDevBox"
+$location = "northuscentral"
+$solutionName = "PetDx"
 $devBoxResourceGroupName = "PetDx-rg"
-$networkResourceGroupName = "PetDx-rg"
-$managementResourceGroupName = "PetDx-rg"
+$networkResourceGroupName = "PetDx-Network-rg"
+$managementResourceGroupName = "PetDx-Management-rg"
 
 # Function to deploy management resources
 function Deploy-ManagementResources {
