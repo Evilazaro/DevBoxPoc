@@ -96,8 +96,8 @@ jobs:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az deployment group create \
-          --name 'Deploy-Management-Resources' \
+          --name 'Deploy-DevBox-Resources' \
           --resource-group $(devBoxResourceGroupName) \
           --template-file ./src/deploy/bicep/deploy.bicep \
           --parameters solutionName=$(solutionName) \
-          --mode Complete 
+          --mode Incremental 
