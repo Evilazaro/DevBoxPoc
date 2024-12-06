@@ -52,6 +52,16 @@ output devCenterName string = deployDevCenter.name
 @description('Dev Center Id')
 output devCenterId string = deployDevCenter.id
 
+module catalogs 'configureDevCenterCatalogs.bicep' = {
+  name: 'devCenterCatalogs'
+  params: {
+    devCenterName: name
+  }
+  dependsOn: [
+    deployDevCenter
+  ]
+}
+
 @description('Dev Center Environments')
 module devCenterEnvironments 'configureDevCenterEnvironments.bicep' = {
   name: 'devCenterEnvironments'

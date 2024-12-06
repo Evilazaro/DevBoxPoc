@@ -20,9 +20,6 @@ var projects = [
 @description('The name of the Dev Center')
 var devCenterName = format('{0}DevCenter', solutionName)
 
-@description('The name of the network resource group')
-var networkResourceGroupName = format('{0}-Network-rg', solutionName)
-
 var tags = {
   division: 'PlatformEngineeringTeam-DX'
   enrironment: 'Production'
