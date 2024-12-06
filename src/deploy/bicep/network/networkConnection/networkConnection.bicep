@@ -32,7 +32,7 @@ resource networkConnection 'Microsoft.DevCenter/networkConnections@2024-10-01-pr
   location: resourceGroup().location
   tags: tags
   properties: {
-    domainJoinType: 'AzureADJoin'
+    domainJoinType: 'HybridAzureADJoin' 
     subnetId: subnet.id
   }
   dependsOn: [

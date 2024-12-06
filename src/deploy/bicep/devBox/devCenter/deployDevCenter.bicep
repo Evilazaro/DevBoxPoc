@@ -10,9 +10,6 @@ param computeGalleryName string
 @description('Projects')
 param projects array
 
-@description('Network Resource Group Name')
-param networkResourceGroupName string
-
 @description('Tags')
 param tags object
 
@@ -73,7 +70,6 @@ module configureDevCenterNetworkConnection 'configureDevCenterNetworkConnection.
     params: {
       devCenterName: name
       networkConnectionName: project.networkConnectionName
-      networkResourceGroupName: networkResourceGroupName
     }
     dependsOn: [
       deployDevCenter

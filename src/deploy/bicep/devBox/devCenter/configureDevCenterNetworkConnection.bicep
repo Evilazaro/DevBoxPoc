@@ -4,9 +4,6 @@ param devCenterName string
 @description('Network Connection Name')
 param networkConnectionName string
 
-@description('Network Resource Group Name')
-param networkResourceGroupName string
-
 @description('Existent Natwork Connection')
 resource networkConnection 'Microsoft.DevCenter/networkConnections@2024-10-01-preview' existing = {
   name: networkConnectionName
@@ -25,7 +22,7 @@ resource devCenterNetworkConnection 'Microsoft.DevCenter/devcenters/attachednetw
     networkConnectionId: format(
       '/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.DevCenter/networkConnections/{2}',
       subscription().subscriptionId,
-      networkResourceGroupName,
+      resourceGroup().name,
       networkConnection.name
     )
   }
