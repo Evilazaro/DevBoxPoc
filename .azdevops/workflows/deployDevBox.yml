@@ -89,7 +89,7 @@ jobs:
 
   # Deploy the Dev Box Management Resources to Azure
   - task: AzureCLI@2
-    displayName: 'Deploy Dev Box Management Resources to Azure'
+    displayName: 'Deploy Dev Box Resources to Azure'
     inputs:
       azureSubscription: devOps
       scriptType: 'bash'
@@ -98,36 +98,6 @@ jobs:
         az deployment group create \
           --name 'Deploy-Management-Resources' \
           --resource-group $(devBoxResourceGroupName) \
-          --template-file ./src/deploy/bicep/management/logAnalytics/deploy.bicep \
+          --template-file ./src/deploy/bicep/deploy.bicep \
           --parameters solutionName=$(solutionName) \
-          --mode Incremental 
-
-  # Deploy the Dev Box Network Resources to Azure
-  - task: AzureCLI@2
-    displayName: 'Deploy Dev Box Network Resources to Azure'
-    inputs:
-      azureSubscription: devOps
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az deployment group create \
-          --name 'Deploy-Network-Resources' \
-          --resource-group $(devBoxResourceGroupName) \
-          --template-file ./src/deploy/bicep/network/deploy.bicep \
-          --parameters solutionName=$(solutionName) \
-          --mode Incremental
-
-  # Deploy the Dev Box DevCenter Resources to Azure
-  - task: AzureCLI@2
-    displayName: 'Deploy Dev Box DevCenter Resources to Azure'
-    inputs:
-      azureSubscription: devOps
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az deployment group create \
-          --name 'Deploy-DevCenter-Resources' \
-          --resource-group $(devBoxResourceGroupName) \
-          --template-file ./src/deploy/bicep/devBox/deploy.bicep \
-          --parameters solutionName=$(solutionName) \
-          --mode Incremental
+          --mode Complete 
