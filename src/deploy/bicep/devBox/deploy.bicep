@@ -6,25 +6,13 @@ var projects = [
   {
     name: 'eShop'
     description: 'eShop Reference Application - AdventureWorks'
-    networkConnectionName: 'eShop-con'
+    networkConnectionName: 'Subnet_10.232.96.0_19-con'
     catalog: {
       name: 'eShop'
       type: 'gitHub'
       uri: 'https://github.com/Evilazaro/eShop.git'
       branch: 'main'
       path: '/.devcenter/customizations/tasks'
-    }
-  }
-  {
-    name: 'contosoTraders'
-    description: 'Contoso Traders Reference Application - Contoso'
-    networkConnectionName: 'contosoTraders-con'
-    catalog: {
-      name: 'contosoTraders'
-      type: 'gitHub'
-      uri: 'https://github.com/Evilazaro/ContosoTraders.git'
-      branch: 'main'
-      path: '/customizations/tasks'
     }
   }
 ]
