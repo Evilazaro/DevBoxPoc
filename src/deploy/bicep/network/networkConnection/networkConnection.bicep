@@ -8,11 +8,15 @@ param vnetName string
 @description('Subnet Name')
 param subnetName string
 
+@description('Virtual Network Resource Group Name')
+param vnetResourceGroupName string
+
 @description('Tags for the Network Connection')
 param tags object
 
 resource vnet 'Microsoft.Network/virtualNetworks@2024-03-01' existing = {
   name: vnetName
+  scope: resourceGroup(vnetResourceGroupName)
 }
 
 resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-03-01' existing = {

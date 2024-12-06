@@ -26,13 +26,6 @@ module networkResources './network/deploy.bicep' = {
   ]
 }
 
-@description('Virtual Network Id')
-output networkResourcesId string = networkResources.outputs.vnetId
-
-@description('Virtual Network Name')
-output networkResourcesName string = networkResources.outputs.vnetName
-
-
 @description('Deploy DevCenter Resources')
 module devCenterResources './devBox/deploy.bicep' = {
   name: 'devCenterResources'
