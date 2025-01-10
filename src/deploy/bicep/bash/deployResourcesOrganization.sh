@@ -1,7 +1,7 @@
 #!/bin/bash
 
 devBoxResourceGroupName="$1"
-location="westus3"
+location="eastus"
 
 # Function to create an Azure resource group
 createResourceGroup() {
@@ -39,7 +39,7 @@ validateInputs() {
         devBoxResourceGroupName='PetDx-rg'
         networkResourceGroupName='PetDx-rg'
         managementResourceGroupName='PetDx-rg'
-        location='westus3'
+        location='eastus'
     fi
 }
 

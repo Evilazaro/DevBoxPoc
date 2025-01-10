@@ -1,4 +1,3 @@
-
 @description('Network Connection Name')
 param name string
 
@@ -17,7 +16,6 @@ param tags object
 resource vnet 'Microsoft.Network/virtualNetworks@2024-03-01' existing = {
   name: vnetName
   scope: resourceGroup(vnetResourceGroupName)
-  
 }
 
 resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-03-01' existing = {
@@ -25,14 +23,13 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-03-01' existing 
   parent: vnet
 }
 
-
 @description('Deploy a network connection to Azure')
 resource networkConnection 'Microsoft.DevCenter/networkConnections@2024-10-01-preview' = {
   name: name
   location: resourceGroup().location
   tags: tags
   properties: {
-    domainJoinType: 'AzureADJoin' 
+    domainJoinType: 'AzureADJoin'
     subnetId: subnet.id
   }
   dependsOn: [
@@ -43,5 +40,5 @@ resource networkConnection 'Microsoft.DevCenter/networkConnections@2024-10-01-pr
 @description('Network Connection Name')
 output name string = networkConnection.name
 
-@description('Network Connection Id') 
+@description('Network Connection Id')
 output id string = networkConnection.id

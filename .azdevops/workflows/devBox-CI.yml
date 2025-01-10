@@ -2,7 +2,7 @@ trigger:
 - main
 
 variables:
-  location: "westus3"
+  location: "eastus"
   solutionName: "ITMSDevBox"
   devBoxResourceGroupName: "PetDx-rg"
   networkResourceGroupName: "PetDx-rg"
