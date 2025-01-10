@@ -5,7 +5,7 @@ param solutionName string
 var vnetName = 'AG_Windows365_PRD_01_EASTUS2_01_VNET'
 
 @description('The name of the resource group of the virtual network')
-var vnetResourceGroupName = 'AG_PRD_01_NRG'
+var vnetResourceGroupName = 'AG_Wind365_PRD_01_NRG'
 
 @description('The tags of the virtual network')
 var tags = {
