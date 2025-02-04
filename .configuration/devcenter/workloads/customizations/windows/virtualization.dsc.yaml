@@ -1,0 +1,41 @@
+properties:
+  configurationVersion: 0.2.0
+  ########################################
+  ### RESOURCES: System Configuration
+  ### Install: WSL and Ubuntu
+  ########################################
+  resources:
+    ### Install Windows Subsystem for Linux (WSL)
+    ### -------------------------------------
+    - resource: PSDscResources/Script
+      id: Microsoft-Windows-Subsystem-Linux
+      directives:
+        description: Enables Windows Features, and Install Ubuntu for WSL
+      settings:
+        SetScript: |
+          Write-Verbose "Setting environment path"
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+                  
+          Write-Verbose "Windows System for Linux (WSL) Install"
+          wsl --install --no-launch
+
+        GetScript: return $false
+        TestScript: return $false
+      ### Install Ubuntu for WSL
+      ### ---------------------
+    - resource: PSDscResources/Script
+      id: Ubuntu
+      directives:
+        description: Enables Windows Features, and Install Ubuntu for WSL
+      settings:
+        SetScript: |
+          Write-Verbose "Setting environment path"
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+                  
+          Write-Verbose "Ubuntu Install"
+          wsl --install -d Ubuntu --no-launch
+
+        GetScript: return $false
+        TestScript: return $false
+      dependsOn:
+        - Microsoft-Windows-Subsystem-Linux
