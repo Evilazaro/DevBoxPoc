@@ -1,0 +1,99 @@
+name: Deploy DevBox Workload to Azure
+ 
+
+permissions:
+  id-token: write
+  contents: write
+
+# Trigger the workflow manually
+on:
+  workflow_dispatch:
+    inputs:
+      workloadName:
+        description: 'Name of the workload'
+        required: true
+        default: 'Contoso'
+        type: string
+      location:
+        description: 'Location of the Azure resources'
+        required: true
+        default: 'eastus2'
+        type: string
+
+env:
+  devBoxResourceGroupName: "${{ inputs.workloadName }}-DevExp-RG"
+  connectivityResourceGroupName: "${{ inputs.workloadName }}-DevExp-Connectivity-RG"
+
+jobs:
+  Build:
+    name: Build Workload Resources
+    runs-on: ubuntu-latest
+    steps:
+      # Update packages and upgrade Bicep
+      - name: Update Packages and Upgrade Bicep
+        run: |
+          sudo apt-get update && \
+          sudo az bicep upgrade
+
+      # Checkout the repository to get the source code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Build the Bicep files for Dev Box Resources
+      - name: Build Dev Box Bicep files
+        run: |
+          az bicep build --file ./deploy/deploy.bicep --outfile ./bicepArtifacts/deploy.json
+          az bicep build-params --file ./deploy/params.bicepparam --outfile ./bicepArtifacts/deploy-params.json
+
+      # Compress the built Bicep artifacts into a zip file
+      - name: Compress Bicep Artifacts
+        run: |
+          zip -r bicepArtifacts_v1.0.0-deploy-${{ github.run_number }}.zip ./bicepArtifacts
+
+      # Upload the compressed Bicep artifacts
+      - name: Upload Bicep Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bicepArtifacts_v1.0.0-deploy-${{ github.run_number }}.zip
+          path: bicepArtifacts_v1.0.0-deploy-${{ github.run_number }}.zip
+
+  Deploy:
+    name: Deploy Dev Box Resources to Azure
+    runs-on: ubuntu-latest
+    needs: Build
+    steps:
+      # Update packages and upgrade Bicep
+      - name: Update Packages and Upgrade Bicep
+        run: |
+          sudo apt-get update && \
+          sudo az bicep upgrade
+      
+      # Checkout the repository to get the source code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Log in to Azure using credentials stored in GitHub Secrets
+      - name: Log in to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Grant execute permissions to the deployment script
+      - name: Grant execute permissions to the script
+        run: chmod +x ./.configuration/bash/deployResourcesOrganization.sh
+
+      # Deploy the Landing Zone Resources using the deployment script
+      - name: Deploy Landing Zone Resources for ${{ inputs.workloadName }}
+        run: ./.configuration/bash/deployResourcesOrganization.sh ${{ env.devBoxResourceGroupName }} ${{ env.connectivityResourceGroupName }} ${{ inputs.location}}
+
+      - name: Deploy Dev Box DevCenter Resources for ${{ inputs.workloadName }} to Azure
+        shell: bash
+        id: deploy-dev-center
+        run: |
+          az deployment group create  \
+            --resource-group ${{ env.devBoxResourceGroupName }} \
+            --template-file ./deploy/deploy.bicep \
+            --parameters ./deploy/params.bicepparam \
+            --parameters workloadName=${{ inputs.workloadName }} \
+                rgConnectivityName=${{ env.connectivityResourceGroupName }} \
+            --mode Incremental
