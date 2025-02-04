@@ -6,11 +6,11 @@ pr:
 
 variables:
   variables:
-  location: "eastus"
+  location: "eastus2"
   solutionName: "ITMSDevBox"
   devBoxResourceGroupName: "IT-MSDevBox-POC"
   bicepArtifactsPath: '$(Build.SourcesDirectory)/bicepArtifacts'
-  connectivityResourceGroupName: "ITMSDevBox-DevExp-Connectivity-RG"
+  connectivityResourceGroupName: "IT-MSDevBox-POC"
 
 jobs:
 
@@ -22,24 +22,6 @@ jobs:
   steps:
   - checkout: self
     displayName: 'Checkout Source Code'
-
-  # Grant execute permissions to the deployment script
-  - task: Bash@3
-    displayName: 'Grant permissions to the Script'
-    inputs:
-      targetType: 'inline'
-      script: |
-        chmod +x ./.configuration/bash/deployResourcesOrganization.sh
-
-  # Deploy the Landing Zone Resources using the deployment script
-  - task: AzureCLI@2
-    displayName: 'Deploy Landing Zone Resources'
-    inputs:
-      azureSubscription: devOps
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        ./.configuration/bash/deployResourcesOrganization.sh $(devBoxResourceGroupName) $(location)
 
   # Deploy the Dev Box Management Resources to Azure
   - task: AzureCLI@2
