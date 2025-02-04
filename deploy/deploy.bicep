@@ -70,34 +70,6 @@ var workloadProjectsInfo = [
       project: 'eShop'
     }
   }
-  {
-    name: 'identityProvider'
-    networkConnectionName: connectivityResources.outputs.networkConnectionsCreated[1].name
-    catalogs: [
-      {
-        catalogName: 'imageDefinitions'
-        uri: 'https://github.com/Evilazaro/IdentityProvider.git'
-        branch: 'main'
-        path: '/.configuration/devcenter/imageDefinitions'
-      }
-      {
-        catalogName: 'environments'
-        uri: 'https://github.com/Evilazaro/IdentityProvider.git'
-        branch: 'main'
-        path: '/.configuration/devcenter/environments/dev'
-      }
-    ]
-    tags: {
-      workload: '${workloadName}-DevExp'
-      landingZone: 'DevExp'
-      resourceType: 'DevCenter'
-      ProductTeam: 'Platform Engineering'
-      Environment: 'Production'
-      Department: 'IT'
-      offering: 'DevBox-as-a-Service'
-      project: 'identityProvider'
-    }
-  }
 ]
 
 @description('Deploy DevEx Resources')
