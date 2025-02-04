@@ -13,7 +13,7 @@ param virtualNetworkResourceGroupName string
   'AzureADJoin'
   'HybridADJoin'
 ])
-param domainJoinType string
+param domainJoinType string = 'AzureADJoin'
 
 @description('Tags for the network connection')
 param tags object = {}

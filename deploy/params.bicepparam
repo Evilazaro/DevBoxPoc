@@ -6,22 +6,15 @@ param rgConnectivityName = '${workloadName}-DevExp-Connectivity-RG'
 
 param workloadConnectivityInfo = [
   {
-    name: 'eShop'
-    networkConnection: {
-      domainJoinType: 'AzureADJoin'
-    }
-  }
-  {
-    name: 'identityProvider'
+    vnetName: 'AG_Windows365_PRD_01_EASTUS2_01_VNET'
+    vnetResourceGroupName: 'AG_Wind365_PRD_01_NRG'
+    subNetName: 'Subnet_10.232.96.0_19'
     networkConnection: {
       domainJoinType: 'AzureADJoin'
     }
   }
 ]
 
-param addressPrefixes = [
-  '10.0.0.0/16'
-]
 
 param workloadCatalogInfo = {
   name: 'Custom-Tasks'

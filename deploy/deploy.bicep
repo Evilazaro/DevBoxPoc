@@ -7,9 +7,6 @@ param rgConnectivityName string
 @description('Connectivity Info')
 param workloadConnectivityInfo array
 
-@description('Address Prefixes')
-param addressPrefixes array
-
 @description('Contoso Dev Center Catalog')
 param workloadCatalogInfo object
 
@@ -21,24 +18,6 @@ param workloadDevBoxDefinitionsInfo array
 
 @description('Workload Role Definitions')
 param workloadRoleDefinitions array
-
-@description('Deploy Monitoring Resources')
-module monitoringResources '../src/bicep/monitoring/logAnalyticsResource.bicep' = {
-  name: 'monitoring'
-  scope: resourceGroup()
-  params: {
-    name: workloadName
-    tags: {
-      workload: '${workloadName}-DevExp'
-      landingZone: 'DevExp'
-      resourceType: 'Log Analytics'
-      ProductTeam: 'Platform Engineering'
-      Environment: 'Production'
-      Department: 'IT'
-      offering: 'DevBox-as-a-Service'
-    }
-  }
-}
 
 @description('Deploy Identity Resources')
 module identityResources '../src/bicep/identity/identityModule.bicep' = {
@@ -56,13 +35,9 @@ module connectivityResources '../src/bicep/connectivity/connectivityWorkload.bic
   scope: resourceGroup()
   params: {
     workloadName: workloadName
-    connectivityResourceGroupName: rgConnectivityName
     workloadConnectivityInfo: workloadConnectivityInfo
-    addressPrefixes: addressPrefixes
+    rgConnectivityName: rgConnectivityName
   }
-  dependsOn: [
-    monitoringResources
-  ]
 }
 
 @description('Projects')
@@ -142,7 +117,6 @@ module devExResources '../src/bicep/DevEx/DevCenter/devCenterResource.bicep' = {
     workloadRoleDefinitions: workloadRoleDefinitions
   }
   dependsOn: [
-    monitoringResources
     identityResources
   ]
 }
