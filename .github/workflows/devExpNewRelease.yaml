@@ -7,46 +7,37 @@ permissions:
 # Trigger the workflow manually
 on:
   workflow_dispatch:
-
-env:
-  location: "eastus"
-  solutionName: "ITMSDevBox"
-  devBoxResourceGroupName: "IT-MSDevBox-POC"
-
+    inputs:
+      comments:
+        description: 'Comments for the release'
+        required: true
+        default: 'No comments provided'
+  push:
+    branches:
+      - main
+    
 jobs:
-  Test-Azure-Credentials-And-Login:
-    runs-on: ubuntu-latest
-    steps:
-      # Log in to Azure using credentials stored in GitHub Secrets
-      - name: Log in to Azure
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
   Build:
+    name: Build Workload resources
     runs-on: ubuntu-latest
-    needs: Test-Azure-Credentials-And-Login
     steps:
-      # Upgrade Bicep to the latest version
-      - name: Upgrade Bicep
+      # Update packages and upgrade Bicep
+      - name: Update Packages and Upgrade Bicep
         run: |
+          sudo apt-get update && \
+          # sudo apt-get upgrade -y && \
           sudo az bicep upgrade
-
+      
       # Checkout the repository to get the source code
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      # Build the Bicep files for Dev Box Management Resources
-      - name: Build Dev Box Management Bicep files
-        run: az bicep build --file ./src/deploy/bicep/management/logAnalytics/deploy.bicep --outfile ./bicepArtifacts/deployManagement.json
-
-      # Build the Bicep files for Dev Box Network Resources
-      - name: Build Dev Box Network Bicep files
-        run: az bicep build --file ./src/deploy/bicep/network/deploy.bicep --outfile ./bicepArtifacts/deployNetwork.json
-
-      # Build the Bicep files for Dev Box DevCenter Resources
-      - name: Build Dev Box DevCenter Bicep files
-        run: az bicep build --file ./src/deploy/bicep/devBox/deploy.bicep --outfile ./bicepArtifacts/deployDevBox.json
+  
+      # Build the Bicep files for Dev Box Resources
+      - name: Build Dev Box Bicep files
+        run: |
+          az bicep build --file ./deploy/deploy.bicep --outfile ./bicepArtifacts/deploy.json
+          az bicep build-params --file ./deploy/params.bicepparam --outfile ./bicepArtifacts/deploy-params.json
 
       # Compress the built Bicep artifacts into a zip file
       - name: Compress Bicep Artifacts
@@ -60,69 +51,10 @@ jobs:
           name: bicepArtifacts_v1.0.0-deploy-${{ github.run_number }}.zip
           path: bicepArtifacts_v1.0.0-deploy-${{ github.run_number }}.zip
 
-  Deploy:
+  publish-bicep-artifacts:
     runs-on: ubuntu-latest
     needs: Build
     steps:
-      # Update packages and upgrade Bicep
-      - name: Update Packages and Upgrade Bicep
-        run: |
-          sudo apt-get update && \
-          sudo az bicep upgrade
-      
-      # Checkout the repository to get the source code
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Log in to Azure using credentials stored in GitHub Secrets
-      - name: Log in to Azure
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      # Grant execute permissions to the deployment script
-      - name: Grant execute permissions to the script
-        run: chmod +x ./src/deploy/bicep/bash/deployResourcesOrganization.sh
-
-      # Deploy the Landing Zone Resources using the deployment script
-      - name: Deploy Landing Zone Resources for ${{ env.solutionName }}
-        run: ./src/deploy/bicep/bash/deployResourcesOrganization.sh ${{ env.devBoxResourceGroupName }} ${{ env.networkResourceGroupName }} ${{ env.managementResourceGroupName }} ${{ env.location }}
-      
-      # Deploy Log Analytics resources using ARM template
-      - name: Deploy Log Analytics
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_CREDENTIALS.subscriptionId }}
-          resourceGroupName: ${{ env.managementResourceGroupName }}
-          template: ./src/deploy/bicep/management/logAnalytics/deploy.bicep
-          parameters: 'solutionName=${{ env.solutionName }}'
-      
-      # Deploy Network Connectivity Resources using ARM template
-      - name: Deploy Network Connectivity Resources
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_CREDENTIALS.subscriptionId }}
-          resourceGroupName: ${{ env.networkResourceGroupName }}
-          template: ./src/deploy/bicep/network/deploy.bicep
-          parameters: 'solutionName=${{ env.solutionName }} managementResourceGroupName=${{ env.managementResourceGroupName }}'
-
-      # Deploy Dev Center Resources using ARM template
-      - name: Deploy Dev Center Resources
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.AZURE_CREDENTIALS.subscriptionId }}
-          resourceGroupName: ${{ env.devBoxResourceGroupName }}
-          template: ./src/deploy/bicep/devBox/deploy.bicep
-          parameters: 'solutionName=${{ env.solutionName }} managementResourceGroupName=${{ env.managementResourceGroupName }}'
-
-  publish-bicep-artifacts:
-    runs-on: ubuntu-latest
-    needs: Deploy
-    steps:
-      # Checkout the repository to get the source code
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       # Download the previously uploaded Bicep artifacts
       - name: Download Bicep Artifacts
         uses: actions/download-artifact@v4
@@ -139,10 +71,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: publish-bicep-artifacts
     steps:
-      # Checkout the repository to get the source code
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       # Download the previously uploaded Bicep artifacts
       - name: Download Bicep Artifacts
         uses: actions/download-artifact@v4
@@ -157,7 +85,8 @@ jobs:
           tag_name: v1.0.${{ github.run_number }}
           release_name: Release v1.0.${{ github.run_number }}
           body: |
-            Commits: ${{ toJson(github.event.commits) }}
+            Commits: ${{ toJson(github.event.Commits) }}
+            Comments: ${{ toJson(github.event.Comments) }}
           draft: false
           prerelease: false
         env:
