@@ -16,7 +16,6 @@ jobs:
 
 - job: Deploy
   displayName: 'Deploy Microsoft DevBox Resources to Azure'
-  dependsOn: Build
   pool:
     name: Linux
   steps:
