@@ -17,7 +17,8 @@ jobs:
 - job: Deploy
   displayName: 'Deploy Microsoft DevBox Resources to Azure'
   pool:
-    name: Linux
+    name: Windows
+    vmImage: 'windows-latest'
   steps:
   - checkout: self
     displayName: 'Checkout Source Code'
@@ -27,14 +28,14 @@ jobs:
     displayName: 'Deploy Dev Box Resources to Azure'
     inputs:
       azureSubscription: devOps
-      scriptType: 'bash'
+      scriptType: 'pscore'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        az deployment group create  \
-            --name 'Deploy-DevBox-Resources'
-            --resource-group $(devBoxResourceGroupName) \
-            --template-file ./deploy/deploy.bicep \
-            --parameters ./deploy/params.bicepparam \
-            --parameters workloadName=$(solutionName) \
-                rgConnectivityName=$(connectivityResourceGroupName) \
+        az deployment group create `
+            --name 'Deploy-DevBox-Resources' `
+            --resource-group $(devBoxResourceGroupName) `
+            --template-file ./deploy/deploy.bicep `
+            --parameters ./deploy/params.bicepparam `
+            --parameters workloadName=$(solutionName) `
+                rgConnectivityName=$(connectivityResourceGroupName) `
             --mode Incremental
