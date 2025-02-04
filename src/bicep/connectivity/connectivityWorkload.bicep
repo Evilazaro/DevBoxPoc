@@ -22,9 +22,9 @@ module networkConnection 'networkConnection/networkConnectionResource.bicep' = [
     name: 'netCon-${netConnection.name}'
     scope: resourceGroup(connectivityResourceGroupName)
     params: {
-      virtualNetworkName: netConnection[i].vnetName
-      subnetName: netConnection[i].subnetName
-      virtualNetworkResourceGroupName: netConnection[i].vnetResourceGroupName
+      virtualNetworkName: netConnection.vnetName
+      subnetName: netConnection.subnetName
+      virtualNetworkResourceGroupName: netConnection.vnetResourceGroupName
       tags: tags
     }
   }
