@@ -19,13 +19,13 @@ param tags object = {
 
 @description('Network Connection Resource')
 module networkConnection 'networkConnection/networkConnectionResource.bicep' = [
-  for (subnet, i) in workloadConnectivityInfo: {
-    name: '${subnet[i].subNetName}-con'
+  for subnet in workloadConnectivityInfo: {
+    name: '${subnet.subNetName}-con'
     scope: resourceGroup(rgConnectivityName)
     params: {
-      subnetName: subnet[i].subNetName
-      virtualNetworkName: subnet[i].vnetName
-      virtualNetworkResourceGroupName: subnet[i].vnetResourceGroupName
+      subnetName: subnet.subNetName
+      virtualNetworkName: subnet.vnetName
+      virtualNetworkResourceGroupName: subnet.vnetResourceGroupName
       tags: tags
     }
   }
