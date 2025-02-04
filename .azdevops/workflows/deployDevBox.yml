@@ -10,55 +10,9 @@ variables:
   solutionName: "ITMSDevBox"
   devBoxResourceGroupName: "IT-MSDevBox-POC"
   bicepArtifactsPath: '$(Build.SourcesDirectory)/bicepArtifacts'
+  connectivityResourceGroupName: "ITMSDevBox-DevExp-Connectivity-RG"
 
 jobs:
-
-- job: Build
-  displayName: 'Build Microsoft DevBox Bicep Files'
-  pool:
-    name: Linux
-  steps:
-  - checkout: self
-    displayName: 'Checkout Source Code'
-
-  # Update packages and install the latest version of Bicep
-  - task: Bash@3
-    displayName: 'Update Packages and Install Bicep'
-    inputs:
-      targetType: 'inline'
-      script: |
-        az bicep upgrade
-
-  # Build the Bicep files for Dev Box Management Resources
-  - task: Bash@3
-    displayName: 'Build Dev Box Management Resources Bicep files'
-    inputs:
-      targetType: 'inline'
-      script: |
-        az bicep build --file ./src/deploy/bicep/management/logAnalytics/deploy.bicep --outfile $(bicepArtifactsPath)/deployManagement.json
-
-  # Build the Bicep files for Dev Box Network Resources
-  - task: Bash@3
-    displayName: 'Build Dev Box Network Resources Bicep files'
-    inputs:
-      targetType: 'inline'
-      script: |
-        az bicep build --file ./src/deploy/bicep/network/deploy.bicep --outfile $(bicepArtifactsPath)/deployNetwork.json
-
-  # Build the Bicep files for Dev Box DevCenter Resources
-  - task: Bash@3
-    displayName: 'Build Dev Box DevCenter Resources Bicep files'
-    inputs:
-      targetType: 'inline'
-      script: |
-        az bicep build --file ./src/deploy/bicep/devBox/deploy.bicep --outfile $(bicepArtifactsPath)/deployDevBox.json
-
-  # Publish the built Bicep artifacts
-  - task: PublishBuildArtifacts@1
-    displayName: 'Upload Bicep Artifacts'
-    inputs:
-      PathtoPublish: '$(bicepArtifactsPath)'
-      ArtifactName: 'bicepArtifacts'
 
 - job: Deploy
   displayName: 'Deploy Microsoft DevBox Resources to Azure'
@@ -101,3 +55,12 @@ jobs:
           --template-file ./src/deploy/bicep/deploy.bicep \
           --parameters solutionName=$(solutionName) \
           --mode Incremental 
+
+        az deployment group create  \
+            --name 'Deploy-DevBox-Resources'
+            --resource-group $(devBoxResourceGroupName) \
+            --template-file ./deploy/deploy.bicep \
+            --parameters ./deploy/params.bicepparam \
+            --parameters workloadName=$(solutionName) \
+                rgConnectivityName=$(connectivityResourceGroupName) \
+            --mode Incremental
