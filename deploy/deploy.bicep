@@ -36,7 +36,7 @@ module connectivityResources '../src/bicep/connectivity/connectivityWorkload.bic
   params: {
     workloadName: workloadName
     workloadConnectivityInfo: workloadConnectivityInfo
-    rgConnectivityName: rgConnectivityName
+    connectivityResourceGroupName: rgConnectivityName
   }
 }
 
