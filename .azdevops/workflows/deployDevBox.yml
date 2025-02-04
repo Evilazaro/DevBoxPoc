@@ -17,7 +17,6 @@ jobs:
 - job: Deploy
   displayName: 'Deploy Microsoft DevBox Resources to Azure'
   pool:
-    name: Windows
     vmImage: 'windows-latest'
   steps:
   - checkout: self
