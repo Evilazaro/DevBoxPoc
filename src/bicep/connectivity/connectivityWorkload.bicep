@@ -4,7 +4,7 @@ param workloadName string
 @description('Connectivity Info')
 param workloadConnectivityInfo array
 
-param rgConnectivityName string
+param connectivityResourceGroupName string
 
 @description('Tags')
 param tags object = {
@@ -16,20 +16,20 @@ param tags object = {
   Department: 'IT'
   offering: 'DevBox-as-a-Service'
 }
-
 @description('Network Connection Resource')
 module networkConnection 'networkConnection/networkConnectionResource.bicep' = [
-  for subnet in workloadConnectivityInfo: {
-    name: '${subnet.subNetName}-con'
-    scope: resourceGroup(rgConnectivityName)
+  for (netConnection, i) in workloadConnectivityInfo: {
+    name: 'netCon-${netConnection.name}'
+    scope: resourceGroup(connectivityResourceGroupName)
     params: {
-      subnetName: subnet.subNetName
-      virtualNetworkName: subnet.vnetName
-      virtualNetworkResourceGroupName: subnet.vnetResourceGroupName
+      virtualNetworkName: netConnection[i].vnetName
+      subnetName: netConnection[i].subnetName
+      virtualNetworkResourceGroupName: netConnection[i].vnetResourceGroupName
       tags: tags
     }
   }
 ]
+
 @description('Network Connections')
 output networkConnectionsCreated array = [
   for (netConnection, i) in workloadConnectivityInfo: {
