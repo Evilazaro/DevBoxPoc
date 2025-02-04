@@ -18,8 +18,8 @@ param tags object = {
 }
 @description('Network Connection Resource')
 module networkConnection 'networkConnection/networkConnectionResource.bicep' = [
-  for netConnection in workloadConnectivityInfo: {
-    name: 'netCon-${netConnection.name}'
+  for (netConnection, i) in workloadConnectivityInfo: {
+    name: 'netCon-${netConnection.subnetName}'
     scope: resourceGroup(connectivityResourceGroupName)
     params: {
       virtualNetworkName: netConnection.vnetName
@@ -29,6 +29,7 @@ module networkConnection 'networkConnection/networkConnectionResource.bicep' = [
     }
   }
 ]
+
 
 @description('Network Connections')
 output networkConnectionsCreated array = [
