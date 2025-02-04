@@ -29,7 +29,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        chmod +x ./src/deploy/bicep/bash/deployResourcesOrganization.sh
+        chmod +x ./.configuration/bash/deployResourcesOrganization.sh
 
   # Deploy the Landing Zone Resources using the deployment script
   - task: AzureCLI@2
@@ -39,7 +39,7 @@ jobs:
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        ./src/deploy/bicep/bash/deployResourcesOrganization.sh $(devBoxResourceGroupName) $(location)
+        ./.configuration/bash/deployResourcesOrganization.sh $(devBoxResourceGroupName) $(location)
 
   # Deploy the Dev Box Management Resources to Azure
   - task: AzureCLI@2
@@ -49,13 +49,6 @@ jobs:
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        az deployment group create \
-          --name 'Deploy-DevBox-Resources' \
-          --resource-group $(devBoxResourceGroupName) \
-          --template-file ./src/deploy/bicep/deploy.bicep \
-          --parameters solutionName=$(solutionName) \
-          --mode Incremental 
-
         az deployment group create  \
             --name 'Deploy-DevBox-Resources'
             --resource-group $(devBoxResourceGroupName) \
